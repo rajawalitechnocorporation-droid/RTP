@@ -6,15 +6,16 @@ from PIL import Image
 import tempfile
 import datetime
 import os
+import json
 
-# --- Konfigurasi Google Drive Service Account ---
-SERVICE_ACCOUNT_FILE = "service_account.json"
-SCOPES = ['https://www.googleapis.com/auth/drive.file']  # akses khusus ke file yang diupload
+# --- Load Service Account dari Secrets ---
+service_account_info = json.loads(st.secrets["SERVICE_ACCOUNT"])
+SCOPES = ['https://www.googleapis.com/auth/drive.file']
 
 def connect_drive():
     gauth = GoogleAuth()
-    gauth.credentials = ServiceAccountCredentials.from_json_keyfile_name(
-        SERVICE_ACCOUNT_FILE, SCOPES
+    gauth.credentials = ServiceAccountCredentials.from_json_keyfile_dict(
+        service_account_info, SCOPES
     )
     return GoogleDrive(gauth)
 
@@ -23,14 +24,13 @@ drive = connect_drive()
 st.set_page_config(page_title="Upload Foto ke Google Drive", page_icon="📷", layout="wide")
 st.title("📷 Upload Foto & Simpan ke Google Drive (Service Account)")
 
-# ID Folder Google Drive (target penyimpanan)
+# Ganti dengan ID folder Google Drive kamu
 FOLDER_ID = "PASTE_FOLDER_ID_KAMU_DI_SINI"
 
 # --- Upload Foto ---
 uploaded_file = st.file_uploader("Pilih foto untuk diupload", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
-    # tampilkan preview
     image = Image.open(uploaded_file)
     st.image(image, caption="Foto yang diupload", use_container_width=True)
 
