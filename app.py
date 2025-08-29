@@ -1,7 +1,7 @@
 import streamlit as st
 from PIL import Image
 
-st.title("📸 Upload Foto Sederhana")
+st.title("📸 Upload Foto Anda disini")
 
 uploaded_file = st.file_uploader("Pilih file gambar", type=["jpg", "jpeg", "png"])
 
