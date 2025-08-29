@@ -9,7 +9,7 @@ import os
 import json
 
 # --- Load Service Account dari Secrets ---
-service_account_info = json.loads(st.secrets["SERVICE_ACCOUNT"])
+service_account_info = dict(st.secrets["SERVICE_ACCOUNT"])
 SCOPES = ['https://www.googleapis.com/auth/drive.file']
 
 def connect_drive():
